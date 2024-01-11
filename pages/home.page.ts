@@ -15,6 +15,10 @@ class HomePage {
         this.searchIcon = page.locator("//div[@class='zak-header-actions zak-header-actions--desktop']//a[@class='zak-header-search__toggle']");
         this.navLinks = page.locator('#zak-primary-menu li[id*=menu]');
     }
+
+    async navigate() {
+        await this.page.goto('https://practice.sdetunicorns.com/');
+    }
 }
 
 export default HomePage;

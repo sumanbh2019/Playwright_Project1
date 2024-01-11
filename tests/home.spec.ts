@@ -10,7 +10,7 @@ test.describe('Home', () => {
         homePage = new HomePage(page);
 
         //go to URL
-        await page.goto('https://practice.sdetunicorns.com/');
+        await homePage.navigate();
 
         //check Page Title
         await expect(page).toHaveTitle('Practice E-Commerce Site – SDET Unicorns – Helping you succeed in Software Quality.');
@@ -27,7 +27,7 @@ test.describe('Home', () => {
     test('click on Get Started Button in Home Page', async ({ page }) => {
         homePage = new HomePage(page);
 
-        await page.goto('https://practice.sdetunicorns.com/');
+        await homePage.navigate();
 
         //click on locator with ID 'get-started'
         await homePage.getStartedBtn.click();
@@ -39,7 +39,7 @@ test.describe('Home', () => {
     test('check Text using text selector', async ({ page }) => {
         let homePage = new HomePage(page);
 
-        await page.goto('https://practice.sdetunicorns.com/');
+        await homePage.navigate();
 
         //get text locator
         const text = await homePage.headingText;
@@ -51,7 +51,7 @@ test.describe('Home', () => {
     test('Verify Home Link enabled using Text and CSS locators', async ({ page }) => {
         let homePage = new HomePage(page);
 
-        await page.goto('https://practice.sdetunicorns.com/');
+        await homePage.navigate();
 
         //it says go to id 'zak-primary-menu' and then to text 'Home'
         // const textCssLocator = page.locator('#zak-primary-menu >> text=Home');
@@ -64,7 +64,7 @@ test.describe('Home', () => {
     test('Verify Search Icon visibility using Xpath Locator', async ({ page }) => {
         let homePage = new HomePage(page);
 
-        await page.goto('https://practice.sdetunicorns.com/');
+        await homePage.navigate();
 
         const searchIconLocator = await homePage.searchIcon;
 
@@ -84,7 +84,7 @@ test.describe('Home', () => {
             "My account"
         ];
 
-        await page.goto('https://practice.sdetunicorns.com/');
+        await homePage.navigate();
 
         //fetch all elements and verify
         const navLocator = homePage.navLinks;
