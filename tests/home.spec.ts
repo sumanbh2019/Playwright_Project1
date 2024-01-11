@@ -2,7 +2,7 @@ import { test, expect } from '@playwright/test';
 import HomePage from '../pages/home.page';
 
 test.describe('Home', () => {
-    let homePage;
+    let homePage: HomePage;
 
     test('Check Home page title', async ({ page }) => {
 
@@ -87,7 +87,7 @@ test.describe('Home', () => {
         await page.goto('https://practice.sdetunicorns.com/');
 
         //fetch all elements and verify
-        const navLocator = await homePage.navLinks;
+        const navLocator = homePage.navLinks;
         expect(await navLocator.allTextContents()).toEqual(expectedLinks);
 
         //fetch only one element and verify it's presence
