@@ -1,7 +1,14 @@
 import { test, expect } from '@playwright/test';
+import HomePage from '../pages/home.page';
 
 test.describe('Home', () => {
+    let homePage;
+
     test('Check Home page title', async ({ page }) => {
+
+        //now we can use homePage to interact with home page
+        homePage = new HomePage(page);
+
         //go to URL
         await page.goto('https://practice.sdetunicorns.com/');
 
@@ -18,45 +25,55 @@ test.describe('Home', () => {
     })
 
     test('click on Get Started Button in Home Page', async ({ page }) => {
+        homePage = new HomePage(page);
+
         await page.goto('https://practice.sdetunicorns.com/');
 
         //click on locator with ID 'get-started'
-        await page.locator('#get-started').click();
+        await homePage.getStartedBtn.click();
 
         //check whether URL has '#getstarted or not
         await expect(page).toHaveURL(/.*#get-started/);
     })
 
-    test('check Text using text selector', async ({page}) => {
+    test('check Text using text selector', async ({ page }) => {
+        let homePage = new HomePage(page);
+
         await page.goto('https://practice.sdetunicorns.com/');
 
         //get text locator
-        const text = page.locator('text=Think different. Make different.');
+        const text = await homePage.headingText;
 
         //check whether locator is visible or not
         await expect(text).toBeVisible();
     })
 
     test('Verify Home Link enabled using Text and CSS locators', async ({ page }) => {
+        let homePage = new HomePage(page);
+
         await page.goto('https://practice.sdetunicorns.com/');
 
         //it says go to id 'zak-primary-menu' and then to text 'Home'
         // const textCssLocator = page.locator('#zak-primary-menu >> text=Home');
-        const textCssLocator = page.locator('#zak-primary-menu:has-text("Home")');
+        const textCssLocator = await homePage.homeLink;
 
         //check whether the locator is enabled or not
         await expect(textCssLocator).toBeEnabled();
     })
 
     test('Verify Search Icon visibility using Xpath Locator', async ({ page }) => {
+        let homePage = new HomePage(page);
+
         await page.goto('https://practice.sdetunicorns.com/');
 
-        const searchIconLocator = page.locator("//div[@class='zak-header-actions zak-header-actions--desktop']//a[@class='zak-header-search__toggle']");
+        const searchIconLocator = await homePage.searchIcon;
 
         await expect(searchIconLocator).toBeVisible();
     })
 
     test('Verify text of all Navigation links', async ({ page }) => {
+
+        let homePage = new HomePage(page);
 
         const expectedLinks = [
             "Home",
@@ -70,23 +87,23 @@ test.describe('Home', () => {
         await page.goto('https://practice.sdetunicorns.com/');
 
         //fetch all elements and verify
-        const navLocator = page.locator('#zak-primary-menu li[id*=menu]');
+        const navLocator = await homePage.navLinks;
         expect(await navLocator.allTextContents()).toEqual(expectedLinks);
 
         //fetch only one element and verify it's presence
-        const nthNavLocator = page.locator('#zak-primary-menu li[id*=menu]').nth(3);
+        const nthNavLocator = navLocator.nth(3);
         expect(await nthNavLocator.textContent()).toEqual(expectedLinks[3]);
 
         //fetch last element and verify it's presence
-        const lastNavLocator = page.locator('#zak-primary-menu li[id*=menu]').last();
+        const lastNavLocator = navLocator.last();
         expect(await lastNavLocator.textContent()).toEqual("My account");
 
         //fetch first element and verify it's presence
-        const firstNavLocator = page.locator('#zak-primary-menu li[id*=menu]').first();
+        const firstNavLocator = navLocator.first();
         expect(await firstNavLocator.textContent()).toEqual("Home");
 
         //to fetch value of all links
-        const linkNames = page.locator('#zak-primary-menu li[id*=menu]');
+        const linkNames = navLocator;
 
         for (const el of await linkNames.elementHandles()) {
             console.log(await el.textContent());
